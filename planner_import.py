@@ -113,9 +113,17 @@ class GraphClient:
         return self.request("PATCH", url, **kw)
 
 
+def check(resp):
+    """Raise with Graph's actual error body surfaced, instead of a bare status code."""
+    if not resp.ok:
+        print(f"  Graph error {resp.status_code} for {resp.request.method} {resp.url}")
+        print(f"  Response body: {resp.text}")
+    resp.raise_for_status()
+
+
 def get_buckets(client, plan_id):
     resp = client.get(f"{GRAPH}/planner/plans/{plan_id}/buckets")
-    resp.raise_for_status()
+    check(resp)
     return {b["name"]: b["id"] for b in resp.json()["value"]}
 
 
@@ -124,7 +132,7 @@ def create_bucket(client, plan_id, name, order_hint=" !"):
         f"{GRAPH}/planner/buckets",
         json={"name": name, "planId": plan_id, "orderHint": order_hint},
     )
-    resp.raise_for_status()
+    check(resp)
     return resp.json()["id"]
 
 
@@ -219,7 +227,7 @@ def create_task(client, plan_id, bucket_id, row, user_cache):
 
 def set_task_details(client, task_id, description, checklist):
     resp = client.get(f"{GRAPH}/planner/tasks/{task_id}/details")
-    resp.raise_for_status()
+    check(resp)
     etag = resp.headers.get("ETag")
 
     body = {}

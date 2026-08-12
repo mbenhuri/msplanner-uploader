@@ -1,17 +1,14 @@
-
-
-Readme · MD
 # Planner Bulk Task Importer
- 
+
 Creates Microsoft Planner tasks in bulk from a CSV or JSON file, using the
 Microsoft Graph API directly (no Claude MCP connector involved). Runs
 unattended with app-only (client credentials) authentication — no interactive
 sign-in needed.
- 
+
 ## 1. Register an Azure AD app
- 
+
 In the [Entra admin center](https://entra.microsoft.com) → **App registrations** → **New registration**:
- 
+
 1. Give it a name (e.g. `planner-import-script`), leave the rest as default, and register.
 2. Note the **Application (client) ID** and **Directory (tenant) ID** from the Overview page.
 3. Go to **Certificates & secrets** → **New client secret**. Copy the secret **value**
@@ -20,6 +17,7 @@ In the [Entra admin center](https://entra.microsoft.com) → **App registrations
    **Application permissions**, and add:
    - `Tasks.ReadWrite.All`
    - `User.Read.All`
+
    `Group.ReadWrite.All` is **not** required for this script — it's only
    needed if you extend it to create brand-new plans, which this script
    doesn't do. Verified against the current per-endpoint Graph docs (list
@@ -32,78 +30,88 @@ In the [Entra admin center](https://entra.microsoft.com) → **App registrations
    behavior has occasionally lagged the docs here in the past.
 5. Click **Grant admin consent** (you'll need an admin, or ask one to click it —
    this is usually the step your IT team needs to approve).
+
 ## 2. Find your Plan ID
- 
-Open the plan in Planner on the web. The URL contains the plan ID, e.g.:
- 
+
+Open the plan in Planner on the web. The URL looks like this:
+
 ```
-https://tasks.office.com/.../Home/Planner/#/plantaskboard?planId=AAAbbbCCCddd123456789
+https://planner.cloud.microsoft/webui/plan/**Plan ID**/view/board?tid=**tenant ID**
 ```
- 
+
+- The segment right after `/plan/` is your **Plan ID** (28 characters, letters and
+  numbers) — that's the `--plan-id` value.
+- The `?tid=` value is your **tenant ID**, not the plan ID — it should match the
+  `tenant_id` you set in `config.json`.
+
+(Older plans may still show the previous `tasks.office.com/.../plantaskboard?planId=...`
+format, where the `planId=` query parameter is the value you want — same idea,
+different URL shape.)
+
 Alternatively, with your app credentials already set up, you can list plans
 for a group with:
- 
+
 ```
 GET https://graph.microsoft.com/v1.0/groups/{group-id}/planner/plans
 ```
- 
+
 ## 3. Configure credentials
- 
+
 Copy `config.sample.json` to `config.json` and fill in your values, **or**
 set environment variables instead (useful if you don't want secrets in a
 file):
- 
+
 ```
 export PLANNER_TENANT_ID="..."
 export PLANNER_CLIENT_ID="..."
 export PLANNER_CLIENT_SECRET="..."
 ```
- 
+
 `config.json` is git-ignored territory — don't commit it if this goes in a repo.
- 
+
 ## 4. Set up a virtual environment and install dependencies
- 
+
 Using a venv keeps `msal`/`requests` isolated from your system Python and any
 other projects.
- 
+
 ```
 python3 -m venv venv
 ```
- 
+
 Activate it (do this every time you open a new terminal to work on this):
- 
+
 ```
 source venv/bin/activate        # macOS/Linux
 venv\Scripts\activate           # Windows (cmd/PowerShell)
 ```
- 
+
 Install dependencies from `requirements.txt`:
- 
+
 ```
 pip install -r requirements.txt
 ```
- 
+
 `venv/` is already covered by `.gitignore` — don't commit it.
- 
+
 ## 5. Run it
- 
+
 Preview first (creates nothing, just shows what would happen):
- 
+
 ```
 python planner_import.py sample_tasks.csv --plan-id YOUR_PLAN_ID --dry-run
 ```
- 
+
 Then run for real:
- 
+
 ```
 python planner_import.py sample_tasks.csv --plan-id YOUR_PLAN_ID
 ```
- 
+
 JSON input works the same way — either a top-level array of task objects, or
 `{"tasks": [...]}`, using the same field names as the CSV columns below.
- 
+
 ## Input file fields
- 
+
 | Field              | Required | Notes |
 |--------------------|----------|-------|
 | `title`            | Yes      | Task name |
@@ -115,9 +123,9 @@ JSON input works the same way — either a top-level array of task objects, or
 | `description`      | No       | Plain text task notes |
 | `percent_complete` | No       | `0`, `50`, or `100` |
 | `checklist`        | No       | Semicolon-separated checklist item titles |
- 
+
 ## Notes and limitations
- 
+
 - Assignee emails must match existing Microsoft 365 accounts (resolved via
   `/users/{email}`); unmatched emails are skipped with a warning, not fatal.
 - The script batches nothing — it makes one API call per task (plus one for
@@ -129,7 +137,3 @@ JSON input works the same way — either a top-level array of task objects, or
 - This uses application permissions, which apply tenant-wide (any plan the
   app is pointed at) rather than being scoped to one specific plan — that's a
   current limitation of the Planner API, not something this script can avoid.
- 
-
-
-
