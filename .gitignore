@@ -18,3 +18,4 @@ venv/
 # Planner importer state/output
 planner_state/
 *_receipt.csv
+exports/

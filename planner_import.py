@@ -518,10 +518,15 @@ def main():
         bucket_name = (row.get("bucket") or "To do").strip()
 
         key = row_key(row)
+        explicit_id = (row.get("id") or "").strip()
         match = None
         state_entry = state.get(key)
         if state_entry and state_entry.get("task_id") in tasks_by_id:
             match = tasks_by_id[state_entry["task_id"]]
+        elif explicit_id and explicit_id in tasks_by_id:
+            # Covers a freshly exported file being re-imported before the
+            # local state file has ever seen this key.
+            match = tasks_by_id[explicit_id]
         else:
             match = tasks_by_bucket_title.get(normalize_key(bucket_name, title))
 
