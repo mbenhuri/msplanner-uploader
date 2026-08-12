@@ -1,0 +1,8 @@
+title,bucket,start_date,due_date,priority,assigned_to,description,percent_complete,checklist
+Kickoff meeting,Planning,2026-08-17,2026-08-17,Important,pm@company.com,Align stakeholders on scope and timeline,0,Book room;Send calendar invite;Prepare agenda
+Draft requirements doc,Planning,2026-08-18,2026-08-24,Important,analyst@company.com,,0,
+Vendor selection,Planning,2026-08-19,2026-08-28,Medium,pm@company.com;analyst@company.com,Compare three shortlisted vendors,0,
+Environment setup,Build,2026-08-25,2026-09-01,Urgent,engineer@company.com,,0,Provision dev server;Configure CI pipeline
+Core feature build,Build,2026-09-01,2026-09-19,Important,engineer@company.com,,0,
+QA test pass,Testing,2026-09-19,2026-09-26,Medium,qa@company.com,,0,
+Go-live,Launch,2026-09-29,2026-09-29,Urgent,pm@company.com,,0,
