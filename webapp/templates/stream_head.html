@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ heading }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="run">
+  <header>
+    <h1><a href="{{ url_for('main.index') }}">Planner Uploader</a></h1>
+  </header>
+  <main>
+    <h2>{{ heading }}</h2>
+    <p class="hint">{{ subtitle }}</p>
+    <div class="log" id="log">
+    <script>
+      // Follow the tail of the run while it streams; stop once the user
+      // scrolls up so they can read back through what happened.
+      (function () {
+        var follow = true;
+        window.addEventListener('scroll', function () {
+          follow = (window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 40);
+        });
+        var timer = setInterval(function () {
+          if (follow) window.scrollTo(0, document.body.scrollHeight);
+        }, 250);
+        window.addEventListener('load', function () { setTimeout(function () { clearInterval(timer); }, 1000); });
+      })();
+    </script>
+{# Browsers hold back rendering until roughly a kilobyte has arrived; this pads
+   past that so the first progress lines appear immediately rather than in a
+   burst partway through the run. #}
+<!-- {{ 'padding' * 180 }} -->

@@ -1,0 +1,21 @@
+    </div>
+
+    {% if error %}
+      <section class="card error">
+        <h3>{{ error[0] }}</h3>
+        <pre class="detail">{{ error[1] }}</pre>
+      </section>
+    {% elif result %}
+      <section class="card done">
+        <h3>{{ result.headline }}</h3>
+        {% if result.note %}<p class="hint">{{ result.note }}</p>{% endif %}
+        {% if result.download_url %}
+          <p><a class="button" href="{{ result.download_url }}">{{ result.download_label }}</a></p>
+        {% endif %}
+      </section>
+    {% endif %}
+
+    <p><a href="{{ url_for('main.index') }}">Back</a></p>
+  </main>
+</body>
+</html>

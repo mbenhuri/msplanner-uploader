@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="card">
+  <h2>Import</h2>
+  <p class="hint">
+    Upload a CSV or JSON file. Existing tasks are matched by the <code>id</code>
+    column if present, otherwise by bucket + title, and updated in place rather
+    than duplicated. <code>percent_complete</code> applies on create only, and a
+    blank field never clears a value already set in Planner.
+  </p>
+  <form method="post" action="{{ url_for('main.do_import') }}" enctype="multipart/form-data">
+    <label>Plan ID
+      <input type="text" name="plan_id" required placeholder="ptWtAvOsBUu6goF2P5Swk2UABmEl"
+             value="{{ request.args.get('plan_id', '') }}">
+    </label>
+    <label>Tasks file
+      <input type="file" name="file" accept=".csv,.json" required>
+    </label>
+    <label class="check">
+      <input type="checkbox" name="dry_run" checked>
+      Dry run — preview only, write nothing
+    </label>
+    <button type="submit">Run import</button>
+  </form>
+</section>
+
+<section class="card">
+  <h2>Export</h2>
+  <p class="hint">
+    Reads a plan back into the same CSV format the importer accepts. The
+    <code>id</code> column holds real Planner task IDs, so an exported file
+    re-imports safely even from a clean checkout.
+  </p>
+  <form method="post" action="{{ url_for('main.do_export') }}">
+    <label>Plan ID
+      <input type="text" name="plan_id" required placeholder="ptWtAvOsBUu6goF2P5Swk2UABmEl">
+    </label>
+    <button type="submit">Export to CSV</button>
+  </form>
+</section>
+
+<p class="footnote">
+  Signed in with delegated permissions — this app can only reach plans whose
+  Microsoft&nbsp;365 group you are a member of.
+</p>
+
+{% endblock %}

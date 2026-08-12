@@ -1,14 +1,21 @@
 # Secrets / credentials
 config.json
+config.web.json
 *.env
 .env
 .env.*
+
+# MSAL token cache — holds a refresh token that acts as the signed-in user.
+# Never commit this.
+token_cache.bin
+*.token_cache.bin
 
 # Python
 __pycache__/
 *.pyc
 .venv/
 venv/
+.pytest_cache/
 
 # OS/editor
 .DS_Store
@@ -19,3 +26,6 @@ venv/
 planner_state/
 *_receipt.csv
 exports/
+
+# Web app data directory (token cache, per-plan match state, run outputs)
+webapp_data/

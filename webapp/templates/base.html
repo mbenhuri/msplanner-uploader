@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Planner Uploader{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header>
+    <h1><a href="{{ url_for('main.index') }}">Planner Uploader</a></h1>
+    {% if session.get('user') %}
+      <div class="who">
+        {{ session['user'].get('name') or session['user'].get('username') }}
+        <a href="{{ url_for('main.logout') }}">Sign out</a>
+      </div>
+    {% endif %}
+  </header>
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>
