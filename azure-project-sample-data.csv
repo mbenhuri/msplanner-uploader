@@ -1,0 +1,20 @@
+title,bucket,start_date,due_date,priority,assigned_to,description,percent_complete,checklist
+Run Defender for Cloud secure score baseline,Assessment,2026-08-12,2026-08-14,Important,,Capture current secure score and export recommendations as the starting benchmark,0,Export secure score report;Document current posture;Share baseline with stakeholders
+Inventory all subscriptions and resource groups,Assessment,2026-08-12,2026-08-15,Medium,,"Build a full inventory of subscriptions, resource groups, and owners",0,
+Review existing RBAC role assignments,Assessment,2026-08-13,2026-08-18,Important,,Audit who has Owner/Contributor at subscription scope,0,Export role assignments;Flag overprivileged accounts
+Enable MFA for all admin accounts,Identity & Access,2026-08-18,2026-08-21,Urgent,,Close the gap on any privileged account without MFA enforced,0,Identify accounts without MFA;Enable Conditional Access MFA policy;Verify enforcement
+Review and remove stale guest accounts,Identity & Access,2026-08-18,2026-08-22,Medium,,Clean up B2B guest accounts with no recent sign-in activity,0,
+Implement Privileged Identity Management for admin roles,Identity & Access,2026-08-21,2026-08-28,Important,,Move standing admin access to just-in-time PIM activation,0,Enable PIM;Set approval workflow;Migrate top 5 admin roles
+Enforce Conditional Access policies for risky sign-ins,Identity & Access,2026-08-22,2026-08-29,Important,,Block or challenge sign-ins flagged as risky by Identity Protection,0,
+Enable encryption at rest for all storage accounts,Data Protection,2026-08-25,2026-08-29,Important,,Confirm customer-managed or platform-managed encryption is active tenant-wide,0,
+Configure Azure Key Vault access policies,Data Protection,2026-08-25,2026-08-30,Medium,,Move from broad access policies to least-privilege RBAC on Key Vault,0,
+Enable soft delete and purge protection on Key Vaults,Data Protection,2026-08-28,2026-09-01,Medium,,Prevent accidental or malicious permanent deletion of secrets,0,
+Review and tighten network security group rules,Network Security,2026-08-29,2026-09-05,Important,,Audit inbound/outbound NSG rules across all VNets,0,Audit open ports;Remove unused rules;Apply least privilege
+Enable Azure Firewall for hub-spoke topology,Network Security,2026-09-01,2026-09-10,Medium,,Centralize egress filtering through the hub VNet,0,
+Disable public access on storage accounts where not required,Network Security,2026-09-02,2026-09-08,Important,,Restrict storage accounts to private endpoints or approved networks only,0,
+Enable Microsoft Sentinel,Monitoring & Response,2026-09-08,2026-09-15,Urgent,,Stand up SIEM coverage for the tenant's core data sources,0,Connect data sources;Enable analytics rules;Configure alerting
+Configure diagnostic settings across subscriptions,Monitoring & Response,2026-09-08,2026-09-12,Medium,,Route activity and resource logs to the Log Analytics workspace,0,
+Set up automated incident response playbooks,Monitoring & Response,2026-09-15,2026-09-22,Medium,,Build Logic App playbooks for common Sentinel alert types,0,
+Apply Azure Policy for security baseline compliance,Governance & Reporting,2026-09-15,2026-09-22,Important,,Assign built-in security baseline initiative across management groups,0,
+Document final secure score improvement,Governance & Reporting,2026-09-22,2026-09-26,Low,,Compare final secure score against the Assessment-phase baseline,0,
+Present findings to leadership,Governance & Reporting,2026-09-26,2026-09-26,Medium,,Summarize posture improvements and remaining risk for leadership,0,
