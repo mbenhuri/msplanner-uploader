@@ -14,3 +14,7 @@ venv/
 .DS_Store
 .vscode/
 .idea/
+
+# Planner importer state/output
+planner_state/
+*_receipt.csv
