@@ -1,3 +1,6 @@
+
+
+Readme · MD
 # Planner Bulk Task Importer
  
 Creates Microsoft Planner tasks in bulk from a CSV or JSON file, using the
@@ -58,11 +61,29 @@ export PLANNER_CLIENT_SECRET="..."
  
 `config.json` is git-ignored territory — don't commit it if this goes in a repo.
  
-## 4. Install dependencies
+## 4. Set up a virtual environment and install dependencies
+ 
+Using a venv keeps `msal`/`requests` isolated from your system Python and any
+other projects.
  
 ```
-pip install msal requests
+python3 -m venv venv
 ```
+ 
+Activate it (do this every time you open a new terminal to work on this):
+ 
+```
+source venv/bin/activate        # macOS/Linux
+venv\Scripts\activate           # Windows (cmd/PowerShell)
+```
+ 
+Install dependencies from `requirements.txt`:
+ 
+```
+pip install -r requirements.txt
+```
+ 
+`venv/` is already covered by `.gitignore` — don't commit it.
  
 ## 5. Run it
  
@@ -86,7 +107,7 @@ JSON input works the same way — either a top-level array of task objects, or
 | Field              | Required | Notes |
 |--------------------|----------|-------|
 | `title`            | Yes      | Task name |
-| `bucket`           | No       | Column/bucket name; created automatically if missing |
+| `bucket`            | No       | Column/bucket name; created automatically if missing |
 | `start_date`       | No       | `YYYY-MM-DD` |
 | `due_date`         | No       | `YYYY-MM-DD` |
 | `priority`         | No       | `Urgent`, `Important`, `Medium`, `Low`, or a raw 0–10 number |
@@ -109,3 +130,6 @@ JSON input works the same way — either a top-level array of task objects, or
   app is pointed at) rather than being scoped to one specific plan — that's a
   current limitation of the Planner API, not something this script can avoid.
  
+
+
+
